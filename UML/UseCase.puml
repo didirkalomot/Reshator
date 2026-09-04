@@ -1,0 +1,47 @@
+@startuml
+rectangle "Решатор - Диаграмма Вариантов Использования" {
+
+  usecase "Открыть задачу" as OpenTask
+    usecase "Создать выражение" as CreateExpression
+      usecase "Ввести выражение" as InputExpression
+    usecase "Копировать выражение" as CopyExpression
+      usecase "Выбрать оригинальное выражениие" as ChooseOriginalExpression
+    usecase "Редактировать выражение" as EditExpression
+      usecase "Выбрать выражение для редактирования" as ChooseEditExpression
+        usecase "Выбрать подвыражениие" as ChooseSubexpression
+          usecase "Выбрать действие (формула или свойство)" as ChooseAction
+    usecase "Посмотреть пространство переменных" as ViewVariables
+      usecase "Добавить переменную" as AddVariable
+      usecase "Удалить переменную" as DeletVariable
+    usecase "Проверить результат" as CheckResult
+    usecase "Сохранить" as SaveTask
+    usecase "Закрыть задачу" as CloseTask
+
+  usecase "Посмотреть справочник" as ViewGuide
+    usecase "Создать формулу" as CreateFormula
+    usecase "Редактировать формулу" as EditFormula
+}
+
+actor "Student" as Student
+
+Student --> OpenTask 
+  CreateExpression ..> OpenTask : <<extend>>
+    InputExpression ..> CreateExpression : <<include>>
+  CopyExpression ..> OpenTask : <<extend>>
+    ChooseOriginalExpression ..> CopyExpression : <<include>>
+  EditExpression ..> OpenTask : <<extend>>
+    ChooseEditExpression ..> EditExpression : <include>>
+      ChooseSubexpression ..> ChooseEditExpression : <<include>>
+        ChooseAction ..> ChooseSubexpression : <<include>>
+  ViewVariables ..> OpenTask : <<extend>>
+    AddVariable ..> ViewVariables : <<extend>>
+    DeletVariable ..> ViewVariables : <<extend>>
+  CheckResult ..> OpenTask : <<extend>>
+  SaveTask ..> OpenTask : <<extend>>
+  OpenTask ..> CloseTask : <<include>>
+
+Student --> ViewGuide
+  CreateFormula ..> ViewGuide : <<extend>>   
+  EditFormula ..> ViewGuide : <<extend>> 
+
+@enduml
